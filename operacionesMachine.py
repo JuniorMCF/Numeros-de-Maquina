@@ -1,5 +1,6 @@
 import numpy as np
 import cambiodeBase as cb
+import sys
 #recibe como parametro una string y lo transforma a una lista en binario
 def transformar_a_binario(numero):
     return cb.convert_numero_lista(numero)#convierte el numero a binario y lo devuelve en lista
@@ -70,7 +71,14 @@ def transformar_a_mantiza_maquina(v_numero,bits_mantiza):#recibe un array del nu
 
     return mantiza_maquina
 def exponenteMaquina(pos_coma,pos_uno):
-    exponente=pos_coma-pos_uno#valor del exponente
+    #print "poscoma,posuno",pos_coma,pos_uno
+    if pos_coma==1 and pos_uno==-1:
+        exponente=-32
+        return exponente
+    if pos_coma>pos_uno:
+        exponente=pos_coma-pos_uno#valor del exponente
+    else:
+        exponente=pos_coma-pos_uno+1
     return exponente
 def posicion_del_objeto(signo_numero,signo_expo):
     if signo_numero==1 and signo_expo==0:
@@ -231,17 +239,18 @@ def busquedabinaria(numero,numerosmaquina):#recibe un string
     if len(bin_exponente)<numerosmaquina[x].bits_expo:
         bin_exponente=[0]*(numerosmaquina[x].bits_expo-len(bin_exponente))+bin_exponente
     flag=check_overflow(signo_numero,signo_expo,bin_exponente,numerosmaquina[x].bits_expo)#si flag es -1 underflow si flag es 0 overflow si es diferente hace la busqueda
-
+    #print "flag",flag
     if flag==1:
         aproximacion=buscar_en_maquina_aprox(numerosmaquina[x],bin_mantiza,bin_exponente,numerosmaquina)
-    else:
-        if flag==0:
-            print "OVERFLOW"
-        if flag==-1:
-            aproximacion=cero_maquina(numerosmaquina[0].bits_expo,numerosmaquina[0].bits_mantiza)
-    y=de_maquina_a_lista(aproximacion)
-    v=de_lista_a_real(y,len(bin_exponente),len(bin_mantiza)-1)
-
-    print ("aproximacion:\n"),y
+    if flag==0:
+        print "OVERFLOW"
+        sys.exit()
+    if flag==-1:
+        aprox=cero_maquina(numerosmaquina[0].bits_expo,numerosmaquina[0].bits_mantiza)
+    if flag!=-1:
+        aprox=de_maquina_a_lista(aproximacion)
+    v=de_lista_a_real(aprox,numerosmaquina[0].bits_expo,numerosmaquina[0].bits_mantiza-1)
+    print ("aproximacion:\n"),aprox
     print "real",v
+    #print "v_numero",v_numero
     return v_numero
