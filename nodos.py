@@ -10,26 +10,29 @@ class NumeroMaquina:
     #signo_expo=-1
     #signo_mant=-1
     def __init__(self,exponente,mantiza,signo_mant,signo_expo):
-        self.bits_expo=len(exponente)#
-        self.bits_mantiza=int(math.sqrt(len(mantiza)))
+        self.bits_expo=len(exponente[0])#
+        self.bits_mantiza=len(mantiza[0])
         self.exp=exponente
         self.mant=mantiza
         self.signo_expo=signo_expo
         self.signo_mant=signo_mant
-    def index_exp(self,x):
-        r= self.exp
-        s=np.array(r)
-        pos=list(s).index(x)
-        return pos
-    def index_mant(self,x):
-        r= self.mant
-        s=np.array(r)
-        pos=list(s).index(x)
-        return pos
+    def obtener_mantiza(self,pos):
+        return self.mant[pos].tolist()
+    def obtener_exponente(self,pos):
+        return self.exp[pos].tolist()
     def getlenexp(self):
         return len(self.exp)
     def getlenmant(self):
         return len(self.mant)
+    def index(self):
+        if signo_mant==1 and signo_expo==0:
+            return 0
+        if signo_mant==1 and signo_expo==1:
+            return 1
+        if signo_mant==0 and signo_expo==1:
+            return 2
+        if signo_mant==0 and signo_expo==0:
+            return 3
     def imprimirObjeto(self):
         #imprimimos las caracteristicas del objeto
         print "\ntipo de dato:",self.tipo
@@ -54,9 +57,9 @@ class NumeroMaquina:
         return self.temp_signo
     def imprimirnumerosdemaquina(self):
         print "*******************************************************************************************************************"
-        print "\n",self.expo_signo(),self.mant_signo(),"\n"
+        print "\n",self.mant_signo(),self.expo_signo(),"\n"
         print "*******************************************************************************************************************"
         for i in range(len(self.exp)):
             print "EXPONENTE: ",operaciones.exponentebin_base10(self.exp[i])
             for j in range(len(self.mant)):
-                print "[",self.signo_expo,"]","[",self.signo_mant,"]",self.exp[i],self.mant[j]
+                print "[",self.signo_mant,"]","[",self.signo_expo,"]",self.exp[i],self.mant[j]
