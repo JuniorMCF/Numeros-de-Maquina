@@ -107,19 +107,31 @@ Representa la exactitud relativa de la aritmética del computador. La existencia
 \textbf{Expansi\'on de Taylor:}
 Sea $f$ la funci\'on  cuyas derivadas existen en un intervalo $I$, y estas no tienen un tama\~no desmesurado,es decir, est\'an acotadas:
 \begin{center}
-$|$\(f\)(x)$|$ $\leq$ k,    x \(\in\) $I$
+$|$\(f\)(x)$|$ $\leq$ k,   x \(\in\) $I$
 \end{center}
 Entonces, se verif\'ica que:\\
 \begin{equation}
 %insetar ecuacion de taylor
+{f(a)}+\frac{f'(a)}{1!}{(x-a)}+\frac{f''(a)}{2!}{(x-a)^2}+\frac{f'''(a)}{3!}{(x-a)^3}+...
 \end{equation}
-Donde $a$ $\in$ $I$ \\
+
+\begin{center}
+Donde $a$ $\in$ $I$
+\end{center}
 Es decir una funci\'on infinitamente derivable en un intervalo puede representarse como un polinomio a partir de sus derivadas evaluadas en el punto "$a$" de dicho intervalo. De manera más compacta:\\
 \begin{equation}
 %insetar ecuacion de taylor en forma de sumatoria
+\sum_{i=0}^\infty\frac{{f}^{n}{(a)}}{n!}{(x-a)^{n}}
 \end{equation}
 Dado que esta serie se expande al infinito, nosotros aproximaremos a un orden de $O$($x^{4}$) para poder hacer c\'alculos aproximados para ciertas funciones como el $sen(x)$ o el $cos(x)$.\\\\
-\textbf{Aritm\'etica de punto flotante:}
+\textbf{Aritm\'etica de punto flotante:}\\\\
+A continuaci\'on vamos a recordar las cuatro operaciones b\'asicas que se realizan sobre este tipo de
+representaciones.\\\\
+\textbf{Suma y Resta}.\\\\
+Cuando sumamos o restamos dos n\'umeros en coma flotante se deben comparar los exponentes y
+hacerlos iguales, para lo cual hay que desplazar o alinear uno de ellos respecto al otro. Dados dos
+números en representaci\'on en coma flotante como:\\
+
 \begin{center}
 {\large \bf 3. AN\'ALISIS}	
 \end{center}
@@ -158,4 +170,4 @@ Dado que esta serie se expande al infinito, nosotros aproximaremos a un orden de
 %
 \end{list}
 \end{multicols}
-\end{document}\grid
+\end{document}
