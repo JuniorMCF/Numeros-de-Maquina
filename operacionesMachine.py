@@ -73,7 +73,7 @@ def transformar_a_mantiza_maquina(v_numero,bits_mantiza):#recibe un array del nu
 def exponenteMaquina(pos_coma,pos_uno):
     #print "poscoma,posuno",pos_coma,pos_uno
     if pos_coma==1 and pos_uno==-1:
-        exponente=-32
+        exponente=-8182
         return exponente
     if pos_coma>pos_uno:
         exponente=pos_coma-pos_uno#valor del exponente
@@ -89,20 +89,19 @@ def posicion_del_objeto(signo_numero,signo_expo):
         return 2
     if signo_numero==0 and signo_expo==0:
         return 3
-def cero_maquina(tam_exp,tam_mant):
-    aproximacion=[]
-    aproximacion.append(0)#signo mantiza negativo
-    aproximacion.append(1)#signo exponente
+def epsilon_maquina(tam_exp,tam_mant):
+    epsilon_maquina=[]
+    epsilon_maquina.append(0)#signo mantiza negativo
+    epsilon_maquina.append(1)#signo exponente
     #print "tamanios",tam_exp,tam_mant
     for i in range(tam_exp):
-        aproximacion.append(1)
+        epsilon_maquina.append(1)
     for j in range(tam_mant):
-        aproximacion.append(0)
-    return aproximacion
-def buscar_en_maquina_aprox(obj,mantiza,exponente,maquina):
+        epsilon_maquina.append(0)
+    return epsilon_maquina
+def buscar_en_maquina_redondeo(obj,mantiza,exponente,maquina):
     bit_carry=mantiza.pop()#para la aproximacion
     #obtenemos las posiciones de los exponentes y mantizas en el respecrivo objeto
-    cambio_de_objeto=-1
     aproximacion=[]
     aproximacion.append(obj.signo_mant)
     aproximacion.append(obj.signo_expo)
@@ -178,6 +177,47 @@ def buscar_en_maquina_aprox(obj,mantiza,exponente,maquina):
         aproximacion.append(obj.obtener_exponente(pos_e))
         aproximacion.append(obj.obtener_mantiza(pos_m))
     return aproximacion
+def buscar_en_maquina_truncamiento(obj,mantiza,exponente,maquina):
+    bit_carry=mantiza.pop()#para el truncamiento consideraremos este bit 0
+    bit_carry=0 # forzamos nuestro carry a 0
+    #obtenemos las posiciones de los exponentes y mantizas en el respecrivo objeto
+    truncamiento=[]
+    truncamiento.append(obj.signo_mant)
+    truncamiento.append(obj.signo_expo)
+
+    pos_e=obj.exp.tolist().index(exponente)
+    pos_m=obj.mant.tolist().index(mantiza)
+    #print "pos_e",pos_e
+    #print "pos_m",pos_m
+
+    if obj.signo_mant==1 and obj.signo_expo==0:#numero negativo con exponente positivo
+        if bit_carry==0:
+            pos_e=pos_e#no hay aproximacion
+            pos_m=pos_m#no hay aproximacion
+        truncamiento.append(obj.obtener_exponente(pos_e))
+        truncamiento.append(obj.obtener_mantiza(pos_m))
+
+    if obj.signo_mant==1 and obj.signo_expo==1:
+        if bit_carry==0:
+            pos_e=pos_e#no hay aproximacion
+            pos_m=pos_m#no hay aproximacion
+        truncamiento.append(obj.obtener_exponente(pos_e))
+        truncamiento.append(obj.obtener_mantiza(pos_m))
+
+    if obj.signo_mant==0 and obj.signo_expo==1:
+        if bit_carry==0:
+            pos_e=pos_e#no hay aproximacion
+            pos_m=pos_m#no hay aproximacion
+        truncamiento.append(obj.obtener_exponente(pos_e))
+        truncamiento.append(obj.obtener_mantiza(pos_m))
+
+    if obj.signo_mant==0 and obj.signo_expo==0:
+        if bit_carry==0:
+            pos_e=pos_e#no hay aproximacion
+            pos_m=pos_m#no hay aproximacion
+        truncamiento.append(obj.obtener_exponente(pos_e))
+        truncamiento.append(obj.obtener_mantiza(pos_m))
+    return truncamiento
 def check_overflow(signo_numero,signo_expo,bin_exponente,bits_expo):#e : exponente maquina
     if len(bin_exponente)>bits_expo:
         if signo_numero==0:
@@ -201,7 +241,7 @@ def de_maquina_a_lista(numero_maquina):
     for j in numero_maquina[3]:
         numero_lista.append(j)
     return numero_lista
-def de_lista_a_real(lista,long_exp,long_mant):
+def de_maquina_a_real(lista,long_exp,long_mant):
     signo_mantiza=lista[0]
     signo_exponente=lista[1]
     exponente=lista[2:2+long_exp]
@@ -218,15 +258,15 @@ def de_lista_a_real(lista,long_exp,long_mant):
     #print "exponente",exponente_real
     return numero
 
-def busquedabinaria(numero,numerosmaquina):#recibe un string
+def busquedabinaria_redondeada(numero,numerosmaquina):#recibe un string
     v_numero=transformar_a_binario(numero)# se transforma el numero a binario y se almacena en una lista
     signo_numero=signoNumero(numero)#guardo el signo del numero 0 positivo , 1 negativo
     #print ("numero\n"),v_numero
     #print "signo numero:",signo_numero
     exponente=str(exponenteMaquina(pos_coma_en_numero(v_numero),pos_uno_en_numero(v_numero)))#
-
+    #print v_numero
     signo_expo=signoExponente(exponente)#obtenemos el signo del exponente 0 o 1
-
+    #print "exp",exponente
     bin_exponente=transformar_a_exponente_maquina(exponente)#transformamos el exponente a lista binaria, se le quita el signo si es negativo
 
     bin_mantiza=transformar_a_mantiza_maquina(v_numero,numerosmaquina[0].bits_mantiza)
@@ -240,17 +280,48 @@ def busquedabinaria(numero,numerosmaquina):#recibe un string
         bin_exponente=[0]*(numerosmaquina[x].bits_expo-len(bin_exponente))+bin_exponente
     flag=check_overflow(signo_numero,signo_expo,bin_exponente,numerosmaquina[x].bits_expo)#si flag es -1 underflow si flag es 0 overflow si es diferente hace la busqueda
     #print "flag",flag
-    if flag==1:
-        aproximacion=buscar_en_maquina_aprox(numerosmaquina[x],bin_mantiza,bin_exponente,numerosmaquina)
+    if flag==1:## en este caso hacemos la busqueda
+        aproximacion=buscar_en_maquina_redondeo(numerosmaquina[x],bin_mantiza,bin_exponente,numerosmaquina)
     if flag==0:
         print "OVERFLOW"
         sys.exit()
-    if flag==-1:
-        aprox=cero_maquina(numerosmaquina[0].bits_expo,numerosmaquina[0].bits_mantiza)
+    if flag==-1:## aqui el numero se desbordo hacia 0, como no existe 0 en notacion normalizada se devolvera un caso especial
+        aprox=epsilon_maquina(numerosmaquina[0].bits_expo,numerosmaquina[0].bits_mantiza)
     if flag!=-1:
         aprox=de_maquina_a_lista(aproximacion)
-    v=de_lista_a_real(aprox,numerosmaquina[0].bits_expo,numerosmaquina[0].bits_mantiza-1)
-    print ("aproximacion:\n"),aprox
-    print "real",v
     #print "v_numero",v_numero
-    return v_numero
+    return aprox
+
+def busquedabinaria_truncada(numero,numerosmaquina):#recibe un string
+    v_numero=transformar_a_binario(numero)# se transforma el numero a binario y se almacena en una lista
+    signo_numero=signoNumero(numero)#guardo el signo del numero 0 positivo , 1 negativo
+    #print ("numero\n"),numero
+    #print "signo numero:",signo_numero
+    exponente=str(exponenteMaquina(pos_coma_en_numero(v_numero),pos_uno_en_numero(v_numero)))#
+    #print v_numero
+    signo_expo=signoExponente(exponente)#obtenemos el signo del exponente 0 o 1
+    #print "exp",exponente
+    bin_exponente=transformar_a_exponente_maquina(exponente)#transformamos el exponente a lista binaria, se le quita el signo si es negativo
+
+    bin_mantiza=transformar_a_mantiza_maquina(v_numero,numerosmaquina[0].bits_mantiza)
+    #print ("mantiza en binario\n"),bin_mantiza
+    x=posicion_del_objeto(signo_numero,signo_expo)
+    #print ("exponente real:\n"),exponente
+    #print ("signo del exponente (positivo=0) (negativo=1):\n"),signo_expo
+    #print ("exponente en binario\n"),bin_exponente
+    # verifico que el exponente en binario tenga por lo menos el tamanio de bits de mi exponente en maquina
+    if len(bin_exponente)<numerosmaquina[x].bits_expo:
+        bin_exponente=[0]*(numerosmaquina[x].bits_expo-len(bin_exponente))+bin_exponente
+    flag=check_overflow(signo_numero,signo_expo,bin_exponente,numerosmaquina[x].bits_expo)#si flag es -1 underflow si flag es 0 overflow si es diferente hace la busqueda
+    #print "flag",flag
+    if flag==1:## en este caso hacemos la busqueda
+        truncamiento=buscar_en_maquina_truncamiento(numerosmaquina[x],bin_mantiza,bin_exponente,numerosmaquina)
+    if flag==0:
+        print "OVERFLOW"
+        sys.exit()
+    if flag==-1:## aqui el numero se desbordo hacia 0, como no existe 0 en notacion normalizada se devolvera un caso especial
+        truncado=epsilon_maquina(numerosmaquina[0].bits_expo,numerosmaquina[0].bits_mantiza)
+    if flag!=-1:
+        truncado=de_maquina_a_lista(truncamiento)
+    #print "v_numero",v_numero
+    return truncado

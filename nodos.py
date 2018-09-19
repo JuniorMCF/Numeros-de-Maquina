@@ -55,6 +55,8 @@ class NumeroMaquina:
         if self.signo_expo==0:
             self.temp_signo="EXPONENTE: Positivo(+)"
         return self.temp_signo
+    def cantidad_de_numeros(self):
+        return self.getlenexp()*self.getlenexp()
     def imprimirnumerosdemaquina(self):
         print "*******************************************************************************************************************"
         print "\n",self.mant_signo(),self.expo_signo(),"\n"

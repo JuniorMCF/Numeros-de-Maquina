@@ -4,12 +4,12 @@ from collections import deque
 import operacionesMachine as op
 import math
 
-def imprimirProcesoTransformacion(cocientes,residuos,cambioBase):
-    for i in range(len(cocientes)-1,-1,-1):
-        print cambioBase,"*",cocientes.pop(i),"+",residuos.pop(i)
-def imprimirProcesoTransformacionDec(enteros,fracciones,cambioBase):
-    for i in fracciones:
-        print i
+#def imprimirProcesoTransformacion(cocientes,residuos,cambioBase):
+#    for i in range(len(cocientes)-1,-1,-1):
+#        print cambioBase,"*",cocientes.pop(i),"+",residuos.pop(i)
+#def imprimirProcesoTransformacionDec(enteros,fracciones,cambioBase):
+#    for i in fracciones:
+#        print i
 def parteEntera(numero):
     num=''.join(map(str,numero))#unimos la lista
     separar=num.split(".")#separamos en dos elementos separados por el "."
@@ -20,7 +20,7 @@ def parteEntera(numero):
     return entero
 def parteDecimal(numero):
     num=''.join(map(str,numero))#unimos la lista
-    separar=num.split(".")#separamos en dos elementos separados por el "."
+    separar=num.split('.')#separamos en dos elementos separados por el "."
     if '.' not in numero:
         decimal=0
     else:
@@ -51,8 +51,8 @@ def transformacionDecimal(decimal,baseOriginal,cambioBase):
 
     for i in range(decimal.index('.')+1,len(decimal)):
         v_decimal.append(int(decimal[i]))
-
-    while v_decimal not in fracc:
+    #print v_decimal
+    while v_decimal not in fracc and len(fracc)<128:
         fracc.append(v_decimal)
         v_decimal=[x*2 for x in v_decimal]
         for i in range(len(v_decimal)-1,0,-1):
@@ -63,7 +63,6 @@ def transformacionDecimal(decimal,baseOriginal,cambioBase):
             v_decimal[0]=v_decimal[0]%10
         if all(v==0 for v in v_decimal):
             break
-
     enterosguardados=max_enteros[:]#hacemos un slicing de la lista
     #imprimirProcesoTransformacionDec(max_enteros,fracc,cambioBase)
     return enterosguardados
@@ -76,10 +75,9 @@ def listaDecimal_a_Binaria(numero,baseOriginal,cambioBase):
     numeroConvertido= enteroBinario+['.']+fraccionBinario
     #print numeroConvertido
     return numeroConvertido
-
 def convert_numero_lista(numero):
     numerolist=list(numero)
-    #print numerolist
+    #print "numerolist",numerolist
     for i in range (0,len(numerolist)):
         if numerolist[i]!='.':
             if numerolist[i]=='-':
