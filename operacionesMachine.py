@@ -10,10 +10,6 @@ def exponentebin_base10(exponente):
         exp_diez+=exponente[i]*2**(len(exponente)-i-1)
     return exp_diez
 def mantizabin_base10(mantiza):
-#    mant_diez=0
-#    for i in range(len(mantiza)):
-#        mant_diez+=mantiza[i]*2**(len(mantiza)-i-1)
-#    return mant_diez
     mant_diez=0
     for i in range(len(mantiza)):
         mant_diez+=mantiza[i]*2**(-i-1)
@@ -257,7 +253,6 @@ def de_maquina_a_real(lista,long_exp,long_mant):
     #print "base",base_real
     #print "exponente",exponente_real
     return numero
-
 def busquedabinaria_redondeada(numero,numerosmaquina):#recibe un string
     v_numero=transformar_a_binario(numero)# se transforma el numero a binario y se almacena en una lista
     signo_numero=signoNumero(numero)#guardo el signo del numero 0 positivo , 1 negativo
@@ -291,7 +286,6 @@ def busquedabinaria_redondeada(numero,numerosmaquina):#recibe un string
         aprox=de_maquina_a_lista(aproximacion)
     #print "v_numero",v_numero
     return aprox
-
 def busquedabinaria_truncada(numero,numerosmaquina):#recibe un string
     v_numero=transformar_a_binario(numero)# se transforma el numero a binario y se almacena en una lista
     signo_numero=signoNumero(numero)#guardo el signo del numero 0 positivo , 1 negativo
