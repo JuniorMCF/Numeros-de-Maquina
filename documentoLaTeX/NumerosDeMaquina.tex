@@ -1,9 +1,9 @@
 \documentclass[10pt,a4paper]{article}
-\usepackage[english,spanish]{babel}
+\usepackage[english]{babel}
 \usepackage{indentfirst}
 \usepackage{anysize} % Soporte para el comando \marginsize
 %\marginsize{1.5cm}{1.5cm}{0.5cm}{1cm}
-\marginsize{2,5cm}{1,8cm}{4cm}{1,7cm}
+%\marginsize{2,5cm}{1,8cm}{4cm}{1,7cm}
 \usepackage[psamsfonts]{amssymb}
 \usepackage{amssymb}
 \usepackage{amsfonts}
@@ -53,7 +53,7 @@ Facultad de Ciencias $2$, Universidad Nacional de Ingenier\'{\i}a $2$, e-mail:an
 
 }
 \end{center}
-%\maketitle 
+%\maketitle
 \begin{quotation}
 {\small
 %\begin{abstract}
@@ -62,9 +62,9 @@ Facultad de Ciencias $2$, Universidad Nacional de Ingenier\'{\i}a $2$, e-mail:an
 \textbf{Palabras Claves:} \textit{mantiza, \'epsilon de m\'aquina, truncamiento, aproximaci\'on, expansi\'on de Taylor}.
 }\\
 {\small
-\hspace*{0.5cm} 
+\hspace*{0.5cm}
 
-\textbf{Keywords:} \textit{mantissa, machine epsilon, clipping, aproach, expansion of Taylor} \\ 
+\textbf{Keywords:} \textit{mantissa, machine epsilon, clipping, aproach, expansion of Taylor} \\
 
 }
 \end{quotation}
@@ -72,13 +72,13 @@ Facultad de Ciencias $2$, Universidad Nacional de Ingenier\'{\i}a $2$, e-mail:an
 \begin{center}
 {\large \bf 1. INTRODUCCI\'ON}
 \end{center}
-En las \'ultimas decadas el avance de la tecnolog\'ia ha crecido considerablemente, tanto en \'ambitos laborales como cient\'ificos, este \'ultimo ayudado grandemente por el calculo por computador.\\
-Aunque dispongamos de los calculos hechos por estas maquinas, ?`se debe confiar ciegamente en los c\'alculos realizados por esta?, ?`que peligro hay para la precisi\'on de los c\'alculos cient\'ificos realizados por la m\'aquina?. En casi todas las ramas de la ciencia, se utiliza alguna expresi\'on num\'erica que involucra c\'alculos. Aun la m\'as peque\~na o rebuscada ecuaci\'on cient\'ifica tiene una soluci\'on num\'erica, obtenida por operaciones aritm\'eticas fundametales ense\~nadas desde muy temprana edad en los centros de estudios.
+En las \'ultimas d\'ecadas el avance de la tecnolog\'ia ha crecido considerablemente, tanto en \'ambitos laborales como cient\'ificos, este \'ultimo ayudado grandemente por el calculo por computador.\\
+Aunque dispongamos de los calculos hechos por estas maquinas, ?`se debe confiar ciegamente en los c\'alculos realizados por esta?, ?`que peligro hay para la precisi\'on de los c\'alculos cient\'ificos realizados por la m\'aquina?. En casi todas las ramas de la ciencia, se utiliza alguna expresi\'on num\'erica que involucra c\'alculos. Aun la m\'as peque\~na o rebuscada ecuaci\'on cient\'ifica tiene una soluci\'on num\'erica, obtenida por operaciones aritm\'eticas fundametales ense\~nadas desde muy temprana edad en los centros de estudios. En el presente informe, expondremos una simulaci\'on de operaciones de una m\'aquina, mostrando la metodolog\'ia que realiza la m\'aquina para dar una respuesta a operaciones b\'asicas como la suma, resta, multiplicaci\'on y la divisi\'on entre 2 n\'umeros reales.?`C\'omo opera la m\'aquina para realizar estas operaciones? Aqu\'i trataremos de mostrar la forma de como lo hace. Adem\'as de c\'alculos b\'asicos, la m\'aquina puede expresar funciones matem\'aticas, esto debido a que dichas funciones se puede aproximar a expresiones conocidas por la m\'aquina como la serie de Taylor. 
 
 \begin{center}
 {\large \bf 2. CONCEPTOS PREVIOS}
 \end{center}
-\textbf{N\'umeros en la computadora:} 
+\textbf{N\'umeros en la computadora:}
 La aparici\'on de los computadores ha hecho posible la resoluci\'on de problemas, que por su tama\~no antes eran excluidos. Desafortunadamente los resultados son afectados por el uso de la aritm\'etica de precisi\'on finita, en la cual para cada n\'umero se puede almacenar tantos d\'igitos como lo permita el dise\~no del computador. As\'i de nuestra experiencia esperamos obtener siempre expresiones verdaderas como 2 + 2 = 4, 3 x 3 = 9, sin embargo, en la aritm\'etica de precisi\'on finita $\sqrt{5}$ no tiene un solo n\'umero fijo y finito, que lo representa. Como $\sqrt{5}$ no tiene una representaci\'on de d\'igitos finitos, en el interior del computador se le da un valor aproximado cuyo cuadrado no es exactamente 5, aunque con toda probabilidad estar\'a lo bastante cerca a \'el para que sea aceptable.\\\\
 \textbf{N\'umeros en punto flotante:}
 Los n\'umeros en punto flotante son n\'umeros reales de la forma:
@@ -88,13 +88,13 @@ Donde $\alpha$ tiene un n\'umero de d\'igitos limitados, $\beta$ es la base y $e
 \begin{equation}
 x = \pm {\alpha}.{\beta} ^ {e} ,\frac{1}{\beta}  < \|a\| < { 1 }
 \end{equation}
-En caso que x tenga representaci\'on en punto flotante normalizada entonces x = 0, $d_1$ $d_2$...$d_k$ donde: 
+En caso que x tenga representaci\'on en punto flotante normalizada entonces x = 0, $d_1$ $d_2$...$d_k$ donde:
 \begin{equation}
 d_1 \neq 0, {0} \leq {d_i} < {\beta}, i = 1, 2, 3,...
 \end{equation}
-y L $\leq$ e $\leq$ U. El conjunto de los n\'umeros en\\ punto flotante se le llama, conjunto de n\'umeros de m\'aquina. El conjunto de n\'umero de m\'aquina es finito ya que si 
+y L $\leq$ e $\leq$ U. El conjunto de los n\'umeros en\\ punto flotante se le llama, conjunto de n\'umeros de m\'aquina. El conjunto de n\'umero de m\'aquina es finito ya que si
 \begin{equation}
-x = \pm 0,d_1 d_2 d_3 d_4 ... d_t.b^{e}, 
+x = \pm 0,d_1 d_2 d_3 d_4 ... d_t.b^{e},
 \end{equation}
 Conn $d_1$ hay $\beta$-1 posibles valores y para $d_i$, i = 2, 3, 4..., t hay $\beta$ posibles asignaciones, luego existir\'an ($\beta$$-$1).$\beta$.$\beta$.$\beta$ = ($\beta$$-$1)$\beta^{t-1}$, fracciones positivas. Pero como el n\'umero de exponentes es U$-$L$+$1 en total habr\'an ($\beta$$-$1)$\beta^{t-1}$.(U$-$L$+$1) n\'umeros de m\'aquina positivos y tomando los n\'umeros de m\'aquina negativos, el total de n\'umeros de m\'aquina es $2$.($\beta$$-$1)$\beta^{t-1}$.(U$-$L$+$1). Si incluimos al cero en nuestros n\'umeros, significa que cualquier n\'umero real debe ser representado por uno de los $2$.($\beta$-1)$\beta^{t-1}$.(U$-$L$+$1)$+$1 n\'umeros de m\'aquina.\\\\
 \textbf{\'Epsilon de m\'aquina:}
@@ -104,6 +104,13 @@ En una aritm\'etica de punto flotante, se llama \'epsilon de la m\'aquina ($\eps
 \end{center}
 El \'epsilon es el n\'umero decimal más peque\~no que, sumado a 1, la computadora nos arroja un valor diferente de 1, es decir, que no es redondeado.\\
 Representa la exactitud relativa de la aritmética del computador. La existencia del \'epsilon de la máquina es una consecuencia de la precisi\'on finita de la aritm\'etica en punto flotante.\\\\
+\textbf{Aproximaciones :} 
+Como hemos dicho, los n\'umeros pueden sufrir aproximaciones cuando se dan como datos de entrada a la m\'aquina o como resultado de operaciones. Estas aproximaciones pueden ser de 2 maneras :
+\begin{itemize}
+\item \textbf{Truncamiento :} En este proceso el n\'umero se representa por medio del mayor n\'umero de la m\'aquina menor que el n\'umero dado.
+\item \textbf{Redondeo :} En este proceso el n\'umero se representa por el n\'umero de m\'aquina m\'as cercano al n\'umero dado.
+\item \textbf{Observaci\'on :} Hay c\'alculos que pueden perjudicar la presici\'on computacional, como por ejemplo se hace la resta de 2 n\'umeros casi iguales, ya que se cancelan los d\'igitos principales.
+\end{itemize} 
 \textbf{Expansi\'on de Taylor:}
 Sea $f$ la funci\'on  cuyas derivadas existen en un intervalo $I$, y estas no tienen un tama\~no desmesurado,es decir, est\'an acotadas:
 \begin{center}
@@ -118,7 +125,7 @@ Entonces, se verif\'ica que:\\
 \begin{center}
 Donde $a$ $\in$ $I$
 \end{center}
-Es decir una funci\'on infinitamente derivable en un intervalo puede representarse como un polinomio a partir de sus derivadas evaluadas en el punto "$a$" de dicho intervalo. De manera más compacta:\\
+Es decir una funci\'on infinitamente derivable en un intervalo puede representarse como un polinomio a partir de sus derivadas evaluadas en el punto  de dicho intervalo. De manera más compacta:\\
 \begin{equation}
 %insetar ecuacion de taylor en forma de sumatoria
 \sum_{i=0}^\infty\frac{{f}^{n}{(a)}}{n!}{(x-a)^{n}}
@@ -133,7 +140,7 @@ hacerlos iguales, para lo cual hay que desplazar o alinear uno de ellos respecto
 números en representaci\'on en coma flotante como:\\
 
 \begin{center}
-{\large \bf 3. AN\'ALISIS}	
+{\large \bf 3. AN\'ALISIS}
 \end{center}
 
 \begin{center}
@@ -147,7 +154,7 @@ números en representaci\'on en coma flotante como:\\
 %\begin{center}
 %{\large \bf Agradecimientos}
 %\end{center}
-%Los autores agradecen a las autoridades de la Facultad de Ciencias de la Universidad Nacional de 
+%Los autores agradecen a las autoridades de la Facultad de Ciencias de la Universidad Nacional de
 %Ingenier\'{\i}a por su apoyo.
 %%\begin{center}
 %%{\large \bf Apendice: }
@@ -165,7 +172,7 @@ números en representaci\'on en coma flotante como:\\
 %------------------------------------- References --------------------
 \small
 \item[1.] I.K. Argyros, \textit{Newton-like methods under mild \linebreak differentiability conditions with error analysis,} Bull. \linebreak Austral. Math. Soc. \textbf{37} (1988), 131-147.
-\item[2.] 
+\item[2.]
 %---------------------------------------------------------------------
 %
 \end{list}
