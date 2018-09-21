@@ -134,10 +134,69 @@ Dado que esta serie se expande al infinito, nosotros aproximaremos a un orden de
 \textbf{Aritm\'etica de punto flotante:}\\\\
 A continuaci\'on vamos a recordar las cuatro operaciones b\'asicas que se realizan sobre este tipo de
 representaciones.\\\\
-\textbf{Suma y Resta}.\\\\
+\textbf{Suma}.\\\\
 Cuando sumamos o restamos dos n\'umeros en coma flotante se deben comparar los exponentes y
-hacerlos iguales, para lo cual hay que desplazar o alinear uno de ellos respecto al otro. Dados dos
-números en representaci\'on en coma flotante como:\\
+hacerlos iguales, para lo cual hay que desplazar o alinear uno de ellos respecto al otro. Por ejemplo, consideremos 10,375 + 6,34375 = 16,71875 o en binario : \\
+\begin{center}
+$\begin{matrix}
+  & 1,0100110 * 2^{3} \\
++ & 1,1001011 * 2^{2}
+\end{matrix}$\\
+\rule{30mm}{0.1mm}
+\end{center}
+Estos 2 n\'umeros no tienen el mismo exponente, as\'i que se desplaza la mantisa para hacer iguales los exponentes y entonces sumar :\\
+\begin{center}
+$\begin{matrix}
+  & 1,0100110 * 2^{3} \\
++ & 1,1001011 * 2^{3} \\
+\end{matrix}$\\
+\rule{30mm}{0.1mm}\\
+$\begin{matrix}
+  & 10,0001100 * 2^{3}
+\end{matrix}$
+\end{center}
+Observe que el desplazamiento de $1,1001011*2^{2}$ pierde el uno delantero y luego de redondear el resultado se convierte en $0,1100110*2^{3}$. El resultado de la suma, $10,0001100*2^{3}$ ( o $1,00001100*2^{4}$) es igual a $10000,1102$ o $16.75$. Esto no es igual a la respuesta exacta ($16,71875$). Es solo una aproximaci\'on debido al error del redondeo del proceso de la suma. \\
+Es importante tener en cuenta que la aritm\'etica de punto flotante en un computador (o calculadora) es siempre una aproximaci\'on. Las leyes de las matem\'aticas no siempre funcionan con n\'umeros de punto
+flotante en un computador. Las matem\'aticas asumen una precisi\'on infinita que un computador no puede alcanzar. Por ejemplo, las matem\'aticas ense\~nan que $(a+b)−b = a$; sin embargo, esto puede ser exactamente cierto en un computador.\\
+\textbf{Resta}\\\\
+La resta trabaja muy similar y tiene los mismos problemas que la suma.\\
+Considere un ejemplo : $16,75 - 15,9375 = 0,8125$
+\begin{center}
+$\begin{matrix}
+  & 1,0000110 * 2^{4} \\
+- & 1,1111111 * 2^{3} \\
+\end{matrix}$ \\
+\rule{30mm}{0.1mm}
+\end{center}
+Desplazando $1,1111111*2^{3}$ da (redondeado arriba) $1,0000000*2^{4}$ \\
+\begin{center}
+$\begin{matrix}
+  & 1,0000110 * 2^{4} \\
+- & 1,0000000 * 2^{4} \\
+\end{matrix}$\\
+\rule{30mm}{0.1mm}\\
+$\begin{matrix}
+  & 0,0000110 * 2^{4}
+\end{matrix}$
+\end{center}
+\textbf{Multiplicaci\'on y divisi\'on} \\\\
+Para la multiplicaci\'on las mantisas son multiplicadas y los exponentes son sumandos. Considere $10,375 * 2,5 = 25,9375$ :\\
+\begin{center}
+$\begin{matrix}
+  & \hspace{0.4cm}1,0100110 * 2^{3} \\
+* & \hspace{0.4cm}1,0100000 * 2^{1} \\
+\end{matrix}$\\
+\rule{35mm}{0.1mm}\\
+$\begin{matrix}
+ &$\hspace{0.6cm}$10100110 \\
++ & 10100110 \\
+\end{matrix}$ \\
+\rule{35mm}{0.1mm}\\
+\hspace{2cm}$1,10011111000000 * 2^{4}$\\
+\end{center}
+Claro esta, el resultado real podr\'ia ser redondeado a $8 bits$ para dar :\\
+$1,1010000 * 2^{4} = 11010,0002 = 26$\\\\
+La divisi\'on es m\'as complicada, pero tiene problemas similares con errores de redondeo.
 
 \begin{center}
 {\large \bf 3. AN\'ALISIS}
